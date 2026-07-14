@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light" />
+  <title>Редактор отчёта по СИМ</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div id="app" class="app-shell">
+    <header class="topbar">
+      <div>
+        <h1>Редактор отчёта по СИМ</h1>
+        <p>Превью и экспорт строятся одним Canvas-рендерером — итоговый PNG совпадает с экраном.</p>
+      </div>
+      <div class="topbar__status" id="connection-status">Локальный режим</div>
+    </header>
+
+    <section class="control-strip">
+      <label class="control-field control-field--grow">
+        <span>ID отчёта</span>
+        <input id="report-id" type="text" autocomplete="off" />
+      </label>
+      <button class="button button--primary" id="save-slide">Сохранить слайд</button>
+      <button class="button" id="load-slide">Обновить данные</button>
+      <button class="button button--dark" id="download-slide">Скачать PNG</button>
+      <button class="button" id="download-all">Скачать все PNG</button>
+    </section>
+
+    <details class="supabase-panel" id="supabase-panel">
+      <summary>Подключение Supabase</summary>
+      <div class="supabase-panel__body">
+        <label class="control-field control-field--grow">
+          <span>Project URL</span>
+          <input id="supabase-url" type="url" placeholder="https://xxxxx.supabase.co" autocomplete="off" />
+        </label>
+        <label class="control-field control-field--grow">
+          <span>Anon key</span>
+          <input id="supabase-key" type="password" placeholder="eyJ..." autocomplete="off" />
+        </label>
+        <label class="control-field">
+          <span>Таблица</span>
+          <input id="supabase-table" type="text" value="sim_report_slides" autocomplete="off" />
+        </label>
+        <button class="button button--primary" id="save-supabase-settings">Сохранить настройки</button>
+        <button class="button" id="test-supabase">Проверить</button>
+      </div>
+      <p class="supabase-note">Без Supabase редактор продолжает работать: данные автоматически сохраняются в браузере.</p>
+    </details>
+
+    <nav class="slide-tabs" aria-label="Слайды">
+      <button class="slide-tab is-active" data-slide-id="1">1. Основные показатели</button>
+      <button class="slide-tab" data-slide-id="2">2. Аварийность</button>
+      <button class="slide-tab" data-slide-id="3">3. Суды</button>
+    </nav>
+
+    <main class="workspace">
+      <section class="preview-card">
+        <div class="preview-card__header">
+          <div>
+            <strong id="slide-title">Основные показатели</strong>
+            <span>1920 × 1080 px</span>
+          </div>
+          <div class="preview-card__actions">
+            <button class="button button--small" id="reset-slide">Вернуть пример</button>
+          </div>
+        </div>
+        <div class="canvas-wrap">
+          <canvas id="report-canvas" width="1920" height="1080" aria-label="Превью слайда"></canvas>
+          <div class="canvas-loading" id="canvas-loading">Загрузка макета…</div>
+        </div>
+      </section>
+
+      <aside class="editor-panel">
+        <div class="editor-panel__header">
+          <div>
+            <h2 id="editor-title">Данные слайда 1</h2>
+            <p>Все изменения сразу отображаются в превью.</p>
+          </div>
+        </div>
+        <div id="editor-form" class="editor-form"></div>
+      </aside>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="./app.js" defer></script>
+</body>
+</html>
